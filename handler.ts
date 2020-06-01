@@ -11,13 +11,9 @@ const sns = new SNS();
 
 export const sendSMS: APIGatewayProxyHandler = async event => {
   const { body } = event;
-  console.log({ body });
-
   if (!body) return { statusCode: 500, body: 'body is empty' };
-
   const { message, phoneNumber }: bodyType = JSON.parse(body);
   console.log({ message, phoneNumber });
-
   if (!message || !phoneNumber) {
     return {
       statusCode: 500,
@@ -30,11 +26,11 @@ export const sendSMS: APIGatewayProxyHandler = async event => {
       Message: message,
       PhoneNumber: `+81${phoneNumber.slice(1)}`,
     };
-    const result = await sns.publish(params).promise();
-    console.log(result);
+    await sns.publish(params).promise();
+    console.log('success');
     return {
       statusCode: 200,
-      body: 'Hello',
+      body: 'success',
     };
   } catch (e) {
     console.log(e);
