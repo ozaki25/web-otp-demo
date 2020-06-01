@@ -23,9 +23,12 @@ provider:
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 functions:
+  authorizerFunc:
+    handler: handler.auth
   sendSMS:
     handler: handler.sendSMS
     events:
       - http:
           method: post
           path: sendSMS
+          authorizer: authorizerFunc
