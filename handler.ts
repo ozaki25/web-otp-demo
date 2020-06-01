@@ -44,9 +44,9 @@ export const sendSMS: APIGatewayProxyHandler = async event => {
 };
 
 export const auth: CustomAuthorizerHandler = (event, context) => {
-  const token = event.headers?.Authorization;
-  console.log({ event, token });
-  if (token === AUTH_KEY) {
+  const { authorizationToken } = event;
+  console.log({ authorizationToken, AUTH_KEY });
+  if (authorizationToken === AUTH_KEY) {
     const policy = {
       principalId: 'user',
       policyDocument: {

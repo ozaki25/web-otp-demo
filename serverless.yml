@@ -6,6 +6,7 @@ custom:
     webpackConfig: ./webpack.config.js
     includeModules: true
 plugins:
+  - serverless-dotenv-plugin
   - serverless-webpack
 provider:
   name: aws
@@ -22,6 +23,7 @@ provider:
       Resource: '*'
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    AUTH_KEY: ${env:AUTH_KEY}
 functions:
   authorizerFunc:
     handler: handler.auth
