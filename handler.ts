@@ -1,11 +1,13 @@
 import { SNS } from 'aws-sdk';
-import { APIGatewayProxyHandler } from 'aws-lambda';
+import { APIGatewayProxyHandler, CustomAuthorizerHandler } from 'aws-lambda';
 import 'source-map-support/register';
 
 type bodyType = {
   message?: string;
   phoneNumber?: string;
 };
+
+const { AUTH_KEY } = process.env;
 
 const sns = new SNS();
 
@@ -38,5 +40,28 @@ export const sendSMS: APIGatewayProxyHandler = async event => {
       statusCode: 500,
       body: JSON.stringify(e),
     };
+  }
+};
+
+export const auth: CustomAuthorizerHandler = (event, context) => {
+  const token = event.headers?.Authorization;
+  console.log({ event, token });
+  if (token === AUTH_KEY) {
+    const policy = {
+      principalId: 'user',
+      policyDocument: {
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Action: 'execute-api:Invoke',
+            Effect: 'Allow',
+            Resource: event.methodArn,
+          },
+        ],
+      },
+    };
+    context.succeed(policy);
+  } else {
+    context.fail('Unauthorized');
   }
 };
