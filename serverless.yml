@@ -15,12 +15,17 @@ provider:
   stage: ${opt:stage, self:custom.defaultStage}
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - 'sns:Publish'
+      Resource: '*'
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 functions:
-  hello:
-    handler: handler.hello
+  sendSMS:
+    handler: handler.sendSMS
     events:
       - http:
-          method: get
-          path: hello
+          method: post
+          path: sendSMS
