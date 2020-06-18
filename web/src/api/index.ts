@@ -1,4 +1,4 @@
-const { API_URL, AUTH_KEY } = process.env;
+const { REACT_APP_API_URL, REACT_APP_AUTH_KEY } = process.env;
 
 export type postPhoneNumberProps = {
   phoneNumber: string;
@@ -6,11 +6,12 @@ export type postPhoneNumberProps = {
 };
 
 export const postPhoneNumber = async (body: postPhoneNumberProps) => {
-  const res = await fetch(`${API_URL}/phonenumber`, {
+  console.log({ body });
+  const res = await fetch(`${REACT_APP_API_URL}/sendSMS`, {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: AUTH_KEY || '',
+      Authorization: REACT_APP_AUTH_KEY || '',
     },
     body: JSON.stringify(body),
   });
