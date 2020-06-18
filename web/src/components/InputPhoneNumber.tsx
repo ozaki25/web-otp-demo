@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   selectPhoneNumber,
   setPhoneNumber,
-  setId,
   sendPhoneNumber,
 } from '../store/otpSlice';
 
