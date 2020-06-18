@@ -13,18 +13,29 @@ const sns = new SNS();
 
 const responseHeders = {
   'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': '*',
   'Access-Control-Allow-Methods': '*',
 };
 
 export const sendSMS: APIGatewayProxyHandler = async event => {
   const { body } = event;
-  if (!body) return { statusCode: 500, body: 'body is empty' };
+  if (!body) {
+    return {
+      statusCode: 500,
+      headers: responseHeders,
+      body: JSON.stringify({ error: 'body is empty' }),
+    };
+  }
+
   const { id, phoneNumber }: bodyType = JSON.parse(body);
   console.log({ id, phoneNumber });
   if (!id || !phoneNumber) {
     return {
       statusCode: 500,
-      body: `invalid params. id: ${id}, phoneNumber: ${phoneNumber}`,
+      headers: responseHeders,
+      body: JSON.stringify({
+        error: `invalid params. id: ${id}, phoneNumber: ${phoneNumber}`,
+      }),
     };
   }
 
@@ -37,14 +48,15 @@ export const sendSMS: APIGatewayProxyHandler = async event => {
     console.log('success');
     return {
       statusCode: 200,
-      body: 'success',
+      headers: responseHeders,
+      body: JSON.stringify({ message: 'success' }),
     };
   } catch (e) {
     console.log(e);
     return {
       statusCode: 500,
-      header: responseHeders,
-      body: JSON.stringify(e),
+      headers: responseHeders,
+      body: JSON.stringify({ error: JSON.stringify(e) }),
     };
   }
 };
