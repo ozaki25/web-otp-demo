@@ -3,7 +3,7 @@ import { APIGatewayProxyHandler, CustomAuthorizerHandler } from 'aws-lambda';
 import 'source-map-support/register';
 
 type bodyType = {
-  message?: string;
+  id?: string;
   phoneNumber?: string;
 };
 
@@ -14,18 +14,18 @@ const sns = new SNS();
 export const sendSMS: APIGatewayProxyHandler = async event => {
   const { body } = event;
   if (!body) return { statusCode: 500, body: 'body is empty' };
-  const { message, phoneNumber }: bodyType = JSON.parse(body);
-  console.log({ message, phoneNumber });
-  if (!message || !phoneNumber) {
+  const { id, phoneNumber }: bodyType = JSON.parse(body);
+  console.log({ id, phoneNumber });
+  if (!id || !phoneNumber) {
     return {
       statusCode: 500,
-      body: `invalid params. message: ${message}, phoneNumber: ${phoneNumber}`,
+      body: `invalid params. id: ${id}, phoneNumber: ${phoneNumber}`,
     };
   }
 
   try {
     const params: SNS.Types.PublishInput = {
-      Message: message,
+      Message: id,
       PhoneNumber: `+81${phoneNumber.slice(1)}`,
     };
     await sns.publish(params).promise();
