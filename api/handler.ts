@@ -28,7 +28,8 @@ export const sendSMS: APIGatewayProxyHandler = async event => {
   }
 
   const { id, phoneNumber }: bodyType = JSON.parse(body);
-  console.log({ id, phoneNumber });
+  const otp = generateOtp();
+  console.log({ id, phoneNumber, otp });
   if (!id || !phoneNumber) {
     return {
       statusCode: 500,
@@ -41,7 +42,7 @@ export const sendSMS: APIGatewayProxyHandler = async event => {
 
   try {
     const params: SNS.Types.PublishInput = {
-      Message: id,
+      Message: otp,
       PhoneNumber: `+81${phoneNumber.slice(1)}`,
     };
     await sns.publish(params).promise();
@@ -83,3 +84,5 @@ export const auth: CustomAuthorizerHandler = (event, context) => {
     context.fail('Unauthorized');
   }
 };
+
+const generateOtp = () => String(Math.floor(Math.random() * 1000000));
