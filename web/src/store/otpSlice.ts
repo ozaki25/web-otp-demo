@@ -60,12 +60,14 @@ export const {
 
 export const sendPhoneNumber = (onSuccess: () => void) => async (
   dispatch: Dispatch<{}>,
-  state: OtpState,
+  state: () => { otp: OtpState },
 ) => {
   try {
     dispatch(start());
     dispatch(setId(uuid()));
-    const { id, phoneNumber } = state;
+    const {
+      otp: { id, phoneNumber },
+    } = state();
     await postPhoneNumber({ id, phoneNumber });
     dispatch(end());
     onSuccess();
