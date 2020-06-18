@@ -34,3 +34,4 @@ functions:
           method: post
           path: sendSMS
           authorizer: authorizerFunc
+          cors: true
