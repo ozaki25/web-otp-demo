@@ -11,6 +11,11 @@ const { AUTH_KEY } = process.env;
 
 const sns = new SNS();
 
+const responseHeders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': '*',
+};
+
 export const sendSMS: APIGatewayProxyHandler = async event => {
   const { body } = event;
   if (!body) return { statusCode: 500, body: 'body is empty' };
@@ -38,6 +43,7 @@ export const sendSMS: APIGatewayProxyHandler = async event => {
     console.log(e);
     return {
       statusCode: 500,
+      header: responseHeders,
       body: JSON.stringify(e),
     };
   }
