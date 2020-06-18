@@ -1,6 +1,7 @@
+import { Dispatch } from 'react';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { postPhoneNumber } from '../api/index';
-import { Dispatch } from 'react';
+import { v4 as uuid } from 'uuid';
 
 type OtpState = {
   loading: boolean;
@@ -57,13 +58,13 @@ export const {
   failure,
 } = otpSlice.actions;
 
-export const sendPhoneNumber = ({
-  onSuccess,
-}: {
-  onSuccess: () => void;
-}) => async (dispatch: Dispatch<{}>, state: OtpState) => {
+export const sendPhoneNumber = (onSuccess: () => void) => async (
+  dispatch: Dispatch<{}>,
+  state: OtpState,
+) => {
   try {
     dispatch(start());
+    dispatch(setId(uuid()));
     const { id, phoneNumber } = state;
     await postPhoneNumber({ id, phoneNumber });
     dispatch(end());

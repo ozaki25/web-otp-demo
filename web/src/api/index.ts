@@ -1,4 +1,4 @@
-const { API_URL } = process.env;
+const { API_URL, AUTH_KEY } = process.env;
 
 export type postPhoneNumberProps = {
   phoneNumber: string;
@@ -10,6 +10,7 @@ export const postPhoneNumber = async (body: postPhoneNumberProps) => {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: AUTH_KEY || '',
     },
     body: JSON.stringify(body),
   });

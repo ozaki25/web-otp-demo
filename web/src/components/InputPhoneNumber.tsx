@@ -1,7 +1,6 @@
 import React, { ChangeEvent, MouseEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { v4 as uuid } from 'uuid';
 
 import {
   selectPhoneNumber,
@@ -25,8 +24,7 @@ function InputPhoneNumber() {
 
   const onClickSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(setId(uuid()));
-    dispatch(sendPhoneNumber({ onSuccess }));
+    dispatch(sendPhoneNumber(onSuccess));
   };
 
   return (
