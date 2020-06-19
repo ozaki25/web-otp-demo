@@ -43,7 +43,7 @@ export const sendSMS: APIGatewayProxyHandler = async event => {
   try {
     const params: SNS.Types.PublishInput = {
       Message: otp,
-      PhoneNumber: `+81${phoneNumber.slice(1)}`,
+      PhoneNumber: phoneNumber.replace(/^0*/, '+81'),
     };
     await sns.publish(params).promise();
     console.log('success');
