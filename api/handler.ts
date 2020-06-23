@@ -43,11 +43,10 @@ export const send: APIGatewayProxyHandler = async event => {
   }
 
   try {
-    const params: SNS.Types.PublishInput = {
-      Message: otp,
-      PhoneNumber: phoneNumber.replace(/^0*/, '+81'),
-    };
-    await sns.publish(params).promise();
+    await publish({
+      message: otp,
+      phoneNumber: phoneNumber.replace(/^0*/, '+81'),
+    });
     console.log('success');
     return {
       statusCode: 200,
@@ -103,4 +102,12 @@ const getItem = (props: { id: string }) => {
     Key: props,
   };
   return dynamo.get(params).promise();
+};
+
+const publish = (props: { message: string; phoneNumber: string }) => {
+  const params: SNS.Types.PublishInput = {
+    Message: props.message,
+    PhoneNumber: props.phoneNumber,
+  };
+  return sns.publish(params).promise();
 };
