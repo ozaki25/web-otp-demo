@@ -34,12 +34,12 @@ provider:
 functions:
   authorizerFunc:
     handler: handler.auth
-  sendSMS:
-    handler: handler.sendSMS
+  send:
+    handler: handler.send
     events:
       - http:
           method: post
-          path: sendSMS
+          path: send
           authorizer: authorizerFunc
           cors: true
 resources:

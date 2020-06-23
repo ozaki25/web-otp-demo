@@ -19,7 +19,7 @@ const responseHeders = {
   'Access-Control-Allow-Methods': '*',
 };
 
-export const sendSMS: APIGatewayProxyHandler = async event => {
+export const send: APIGatewayProxyHandler = async event => {
   const { body } = event;
   if (!body) {
     return {
