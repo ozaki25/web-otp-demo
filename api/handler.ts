@@ -43,6 +43,7 @@ export const send: APIGatewayProxyHandler = async event => {
   }
 
   try {
+    await putItem({ id, otp, timestamp: new Date() });
     await publish({
       message: otp,
       phoneNumber: phoneNumber.replace(/^0*/, '+81'),
@@ -88,7 +89,7 @@ export const auth: CustomAuthorizerHandler = (event, context) => {
 
 const generateOtp = () => String(Math.floor(Math.random() * 1000000));
 
-const putItem = (props: { id: string; otp: string }) => {
+const putItem = (props: { id: string; otp: string; timestamp: Date }) => {
   const params: DynamoDB.DocumentClient.PutItemInput = {
     TableName: OTP_TABLE || '',
     Item: props,
