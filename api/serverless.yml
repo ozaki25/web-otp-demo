@@ -43,6 +43,14 @@ functions:
           path: send
           authorizer: customauth
           cors: true
+  auth:
+    handler: handler.auth
+    events:
+      - http:
+          method: post
+          path: auth
+          authorizer: customauth
+          cors: true
 resources:
   Resources:
     User:
