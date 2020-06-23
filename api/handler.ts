@@ -70,7 +70,7 @@ export const send: APIGatewayProxyHandler = async event => {
   }
 };
 
-export const auth: APIGatewayProxyHandler = async event => {
+export const otp: APIGatewayProxyHandler = async event => {
   const { body } = event;
   if (!body) {
     return {
@@ -107,7 +107,7 @@ export const auth: APIGatewayProxyHandler = async event => {
     return {
       statusCode: 200,
       headers: responseHeders,
-      body: JSON.stringify({ result: otp === Item.otp ? 'ok' : 'ng' }),
+      body: JSON.stringify({ message: otp === Item.otp ? 'ok' : 'ng' }),
     };
   } catch (e) {
     console.log(e);

@@ -43,13 +43,12 @@ functions:
           path: send
           authorizer: customauth
           cors: true
-  auth:
-    handler: handler.auth
+  otp:
+    handler: handler.otp
     events:
       - http:
           method: post
-          path: auth
-          authorizer: customauth
+          path: otp
           cors: true
 resources:
   Resources:
