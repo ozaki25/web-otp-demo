@@ -104,11 +104,10 @@ export const auth: APIGatewayProxyHandler = async event => {
         }),
       };
     }
-    const result = otp === Item.otp ? 'ok' : 'ng';
     return {
       statusCode: 200,
       headers: responseHeders,
-      body: JSON.stringify({ result }),
+      body: JSON.stringify({ result: otp === Item.otp ? 'ok' : 'ng' }),
     };
   } catch (e) {
     console.log(e);
