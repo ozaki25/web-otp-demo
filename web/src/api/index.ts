@@ -24,7 +24,7 @@ export const postPhoneNumber = async (body: postPhoneNumberProps) => {
 };
 
 export const postOtp = async (body: postOtpProps) => {
-  const res = await fetch(`${REACT_APP_API_URL}/auth`, {
+  const res = await fetch(`${REACT_APP_API_URL}/otp`, {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',

@@ -86,8 +86,8 @@ export const sendOtp = (onSuccess: () => void, onError: () => void) => async (
     const {
       otp: { id, otp },
     } = state();
-    const res = await postOtp({ id, otp });
-    if (res.result !== 'ok') throw new Error('invalid otp');
+    const result = await postOtp({ id, otp });
+    if (result.message !== 'ok') throw new Error('invalid otp');
     dispatch(end());
     onSuccess();
   } catch (error) {
