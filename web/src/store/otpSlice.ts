@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { postPhoneNumber, postOtp } from '../api/index';
 import { v4 as uuid } from 'uuid';
+import { postPhoneNumber, postOtp } from '../api/index';
 
 type OtpState = {
   loading: boolean;
