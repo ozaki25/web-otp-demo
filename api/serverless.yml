@@ -21,8 +21,15 @@ provider:
       Action:
         - 'sns:Publish'
       Resource: '*'
+    - Effect: Allow
+      Action:
+        - 'dynamodb:GetItem'
+        - 'dynamodb:PutItem'
+      Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}*'
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    DYNAMODB_TABLE: ${self:service.name}-${self:provider.stage}
+    OTP_TABLE: ${self:service.name}-${self:provider.stage}-otp
     AUTH_KEY: ${env:AUTH_KEY}
 functions:
   authorizerFunc:
@@ -35,3 +42,16 @@ functions:
           path: sendSMS
           authorizer: authorizerFunc
           cors: true
+resources:
+  Resources:
+    User:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.OTP_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
