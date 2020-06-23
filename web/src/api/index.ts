@@ -6,7 +6,7 @@ export type postPhoneNumberProps = {
 };
 
 export const postPhoneNumber = async (body: postPhoneNumberProps) => {
-  const res = await fetch(`${REACT_APP_API_URL}/sendSMS`, {
+  const res = await fetch(`${REACT_APP_API_URL}/send`, {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
