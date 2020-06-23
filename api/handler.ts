@@ -7,7 +7,7 @@ type bodyType = {
   phoneNumber?: string;
 };
 
-const { AUTH_KEY, OTP_TABLE } = process.env;
+const { AUTH_KEY, OTP_TABLE, DOMAIN } = process.env;
 
 const sns = new SNS();
 
@@ -45,7 +45,8 @@ export const send: APIGatewayProxyHandler = async event => {
   try {
     await putItem({ id, otp, timestamp: new Date() });
     await publish({
-      message: otp,
+      message: `Your OTP is ${otp}
+@${DOMAIN} #${otp}`,
       phoneNumber: phoneNumber.replace(/^0*/, '+81'),
     });
     console.log('success');
@@ -89,7 +90,7 @@ export const customauth: CustomAuthorizerHandler = (event, context) => {
 
 const generateOtp = () => String(Math.floor(Math.random() * 1000000));
 
-const putItem = (props: { id: string; otp: string; timestamp: Date }) => {
+const putItem = (props: { id: string; otp: string; timestamp: string }) => {
   const params: DynamoDB.DocumentClient.PutItemInput = {
     TableName: OTP_TABLE || '',
     Item: props,

@@ -31,6 +31,7 @@ provider:
     DYNAMODB_TABLE: ${self:service.name}-${self:provider.stage}
     OTP_TABLE: ${self:service.name}-${self:provider.stage}-otp
     AUTH_KEY: ${env:AUTH_KEY}
+    DOMAIN: ${env:DOMAIN}
 functions:
   customauth:
     handler: handler.customauth
