@@ -64,7 +64,7 @@ export const send: APIGatewayProxyHandler = async event => {
   }
 };
 
-export const auth: CustomAuthorizerHandler = (event, context) => {
+export const customauth: CustomAuthorizerHandler = (event, context) => {
   const { authorizationToken } = event;
   console.log({ authorizationToken, AUTH_KEY });
   if (authorizationToken === AUTH_KEY) {

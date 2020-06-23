@@ -32,15 +32,15 @@ provider:
     OTP_TABLE: ${self:service.name}-${self:provider.stage}-otp
     AUTH_KEY: ${env:AUTH_KEY}
 functions:
-  authorizerFunc:
-    handler: handler.auth
+  customauth:
+    handler: handler.customauth
   send:
     handler: handler.send
     events:
       - http:
           method: post
           path: send
-          authorizer: authorizerFunc
+          authorizer: customauth
           cors: true
 resources:
   Resources:
