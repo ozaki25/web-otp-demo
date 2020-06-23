@@ -1,7 +1,7 @@
 import React, { ChangeEvent, MouseEvent } from 'react';
 import { useHistory } from 'react-router-dom';
-import { selectOtp, setOtp, sendOtp } from '../store/otpSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { selectOtp, setOtp, sendOtp, sendPhoneNumber } from '../store/otpSlice';
 
 function InputOtp() {
   const history = useHistory();
@@ -20,9 +20,18 @@ function InputOtp() {
     alert('OTPが間違っているか有効期限切れです');
   };
 
+  const onSuccessResend = () => {
+    alert('再送しました');
+  };
+
   const onClickSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(sendOtp(onSuccess, onError));
+  };
+
+  const onClickResend = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(sendPhoneNumber(onSuccessResend));
   };
 
   return (
@@ -31,7 +40,8 @@ function InputOtp() {
       <br />
       <input name="otp" onChange={onChange} value={otp} />
       <br />
-      <button onClick={onClickSubmit}>送信</button> <button>再発行</button>
+      <button onClick={onClickSubmit}>送信</button>{' '}
+      <button onClick={onClickResend}>再発行</button>
     </div>
   );
 }
