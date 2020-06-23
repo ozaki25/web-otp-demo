@@ -5,8 +5,26 @@ export type postPhoneNumberProps = {
   id: string;
 };
 
+export type postOtpProps = {
+  otp: string;
+  id: string;
+};
+
 export const postPhoneNumber = async (body: postPhoneNumberProps) => {
   const res = await fetch(`${REACT_APP_API_URL}/send`, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: REACT_APP_AUTH_KEY || '',
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+};
+
+export const postOtp = async (body: postOtpProps) => {
+  const res = await fetch(`${REACT_APP_API_URL}/auth`, {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',

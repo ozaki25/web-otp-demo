@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { postPhoneNumber } from '../api/index';
+import { postPhoneNumber, postOtp } from '../api/index';
 import { v4 as uuid } from 'uuid';
 
 type OtpState = {
@@ -74,6 +74,26 @@ export const sendPhoneNumber = (onSuccess: () => void) => async (
   } catch (error) {
     console.log(error);
     dispatch(failure(error.stack));
+  }
+};
+
+export const sendOtp = (onSuccess: () => void, onError: () => void) => async (
+  dispatch: Dispatch<{}>,
+  state: () => { otp: OtpState },
+) => {
+  try {
+    dispatch(start());
+    const {
+      otp: { id, otp },
+    } = state();
+    const res = await postOtp({ id, otp });
+    if (res.result !== 'ok') throw new Error('invalid otp');
+    dispatch(end());
+    onSuccess();
+  } catch (error) {
+    console.log(error);
+    dispatch(failure(error.stack));
+    onError();
   }
 };
 
