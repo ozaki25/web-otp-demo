@@ -1,4 +1,4 @@
-import { SNS } from 'aws-sdk';
+import { DynamoDB, SNS } from 'aws-sdk';
 import { APIGatewayProxyHandler, CustomAuthorizerHandler } from 'aws-lambda';
 import 'source-map-support/register';
 
@@ -7,9 +7,11 @@ type bodyType = {
   phoneNumber?: string;
 };
 
-const { AUTH_KEY } = process.env;
+const { AUTH_KEY, OTP_TABLE } = process.env;
 
 const sns = new SNS();
+
+const dynamo = new DynamoDB.DocumentClient();
 
 const responseHeders = {
   'Access-Control-Allow-Origin': '*',
@@ -86,3 +88,19 @@ export const auth: CustomAuthorizerHandler = (event, context) => {
 };
 
 const generateOtp = () => String(Math.floor(Math.random() * 1000000));
+
+const putItem = (props: { id: string; otp: string }) => {
+  const params: DynamoDB.DocumentClient.PutItemInput = {
+    TableName: OTP_TABLE || '',
+    Item: props,
+  };
+  return dynamo.put(params).promise();
+};
+
+const getItem = (props: { id: string }) => {
+  const params: DynamoDB.DocumentClient.GetItemInput = {
+    TableName: OTP_TABLE || '',
+    Key: props,
+  };
+  return dynamo.get(params).promise();
+};
