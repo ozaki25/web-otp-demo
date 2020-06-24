@@ -1,8 +1,8 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Router from './routes/router';
 import useWebOtp from './hooks/useWebOtp';
 import { selectId } from './store/otpSlice';
-import { useSelector } from 'react-redux';
 
 function App() {
   useWebOtp();

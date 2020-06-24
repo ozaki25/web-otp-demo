@@ -6,9 +6,8 @@ function useWebOtp() {
   const dispatch = useDispatch();
 
   const receive = useCallback(async () => {
-    console.log(`'customElements' in window: ${'customElements' in window}`);
     console.log(`'OTPCredential' in window: ${'OTPCredential' in window}`);
-    if ('customElements' in window && 'OTPCredential' in window) {
+    if ('OTPCredential' in window) {
       try {
         const content = await window.navigator.credentials.get({
           // @ts-ignore
